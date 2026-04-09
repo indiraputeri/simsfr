@@ -1,6 +1,6 @@
 ---
 title: "A Simulation Framework for Evaluating Spatial Regression Models of Hierarchical Areal Data"
-subtitle: "PhD Viva Seminar"
+subtitle: "FORSTAT ICON Parallel Session"
 author:
   - name: Indira Puteri Kinasih
     email: indiraputeri@uinmataram
@@ -221,7 +221,7 @@ More details $\rightarrow$ [Simulation 1 Diagram](#sims1)
 
 # Key Results
 
-## Bias Values
+## Systematic Bias Across Spatial Structures
 
 ::: columns
 ::: {.column width="50%"}
@@ -239,14 +239,18 @@ More details $\rightarrow$ [Simulation 1 Diagram](#sims1)
 :::
 
 ::: callout-note
-  
+
+## What can be seen?
+
   - Model performance depends on alignment with the true spatial process (DGP);
   - CAR provides stable estimates under spatial dependence;
   - Multilevel CAR further reduces bias for hierarchical data
   
 :::
 
-## RMSE values
+## Prediction Accuracy Follows Model–Data Alignment
+
+![](rmseplot.png)
 
 # Appendix
 
