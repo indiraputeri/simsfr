@@ -298,9 +298,11 @@ Beyond standard simulation studies, this work introduces:
 - Systematic misspecification analysis
 - Integration of hierarchical spatial modelling
 
-**Code & Reproducibility**
+## Code & Reproducibility
 
+[GitHub Repository](https://github.com/indiraputeri-phd/CAR_simcomp)
 https://github.com/indiraputeri-phd/CAR_simcomp
+
 
 # Thank you :)
 
