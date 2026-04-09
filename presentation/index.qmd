@@ -1,0 +1,260 @@
+---
+title: "A Simulation Framework for Evaluating Spatial Regression Models of Hierarchical Areal Data"
+subtitle: "PhD Viva Seminar"
+author:
+  - name: Indira Puteri Kinasih
+    email: indiraputeri@uinmataram
+    affiliations: Universitas Islam Negeri Mataram
+    
+  - name: Haziq Jamil
+    email: haziq.jamil@ubd.edu.bn
+    affiliations: Universiti Brunei Darussalam
+    
+  - name: Elvynna Leong
+    email: elvynna.leong@ubd.edu.bn
+    affiliations: Universiti Brunei Darussalam
+
+date: April 9, 2026
+bibliography: ../refs.bib
+
+format:
+  revealjs:
+    theme: white
+    logo: forstat_logo.png
+    transition: slide
+    slide-number: true
+    incremental: false
+    code-fold: true
+    css: style.css
+    html-math-method: mathjax
+    self-contained: false
+    title-slide-attributes:
+        data-background-image: uin-ubd-bg.png
+        data-background-position: center
+        data-background-size: cover
+editor: visual
+include-after: |
+        <script type="text/javascript">
+          Reveal.on('ready', event => {
+            if (event.indexh === 0) {
+              document.querySelector("div.has-logo > img.slide-logo").style.display = "none";
+            }
+          });
+          Reveal.addEventListener('slidechanged', (event) => {
+            if (event.indexh === 0) {
+              Reveal.configure({ slideNumber: null });
+              document.querySelector("div.has-logo > img.slide-logo").style.display = "none";
+            }
+            if (event.indexh === 1) { 
+              Reveal.configure({ slideNumber: 'c/t' });
+              document.querySelector("div.has-logo > img.slide-logo").style.display = null;
+            }
+          });
+        </script>
+---
+
+
+## Background
+
+:::{.incremental}
+
+
+- Spatial + hierarchical nature of data
+- Why independence assumption fails
+:::
+
+## Problems
+
+
+-   **Standard regression models** $\sum_{k=1}^p \beta_k x_{ik}$ ignore spatial dependence in housing prices;
+
+-   **Geographically weighted regression (GWR)**: $\sum_{k=1}^p \beta_k(s)x_k(s)$; requires precise location information;
+
+-   **Simultaneously Autoregressive models (SAR)**: $\rho \sum_{s'} w(s,s') y(s') + \sum_{k=1}^p \beta_k x_k(s)$ not naturally designed for hierarchical data with multiple observations per spatial unit;
+
+-   **Conditionally autoregressive models (CAR)** remain underused in the study areas that require a spatial regression model
+
+
+
+## Conditional Autoregressive (CAR) Model
+
+::: {.fragment .fade-up}
+
+$$
+y(s) = \sum_{k=1}^p \beta_k x_k(s) + \phi(s) + \varepsilon(s)
+$${#eq-car}
+
+- it **models spatial dependence through a latent, area-level effect**;
+- providing a natural framework for areal and hierarchical data
+:::
+
+
+
+## Spatial structure via CAR: the role of $\boldsymbol{\phi}$
+
+- Leroux prior:
+
+::: {.fragment .fade-up}
+
+$$
+\phi_i|\boldsymbol{\phi}_{-i}, \mathbf{W},\rho, \sigma_{\phi}^2  \sim  N\left(\frac{\rho\sum_{m=1}^Mw_{mi}\phi_m}{A},\frac{\sigma_{\phi}^2}{A}\right)
+$$ {#eq-lerouxphi}
+
+:::
+
+- where:
+
+  * $A = \rho\sum_{m=1}^Mw_{im}+1-\rho$
+  * $\rho \sim \mathcal{Unif}(0,1)$
+  * $\tau^2 \ \sim \Gamma^{-1}(a,b)$
+
+## Neighbourhood matrix $\mathbf{W}$
+
+::: columns
+::: {.column width="50%"}
+:::{.fragment}
+
+* $\mathbf{W}$ is a neighbourhood matrix
+:::
+
+:::{.fragment}
+
+![](sartf_plot.png){width="100%"}
+
+:::
+
+
+:::
+
+:::{.column width="50%"}
+
+:::{.fragment}
+
+$$
+  \mathbf{W} =
+  \begin{array}{cccccc}
+   & A & B & C & D & E \\
+A & 0 & 1 & 1 & 1 & 1\\ 
+B & 1 & 0 & 1 & 0 & 0\\ 
+C & 1 & 1 & 0 & 1 & 0\\
+D & 1 & 0 & 1 & 0 & 1\\
+E & 1 & 0 & 0 & 1 & 0\\
+\end{array}
+$$
+
+:::
+
+:::
+:::
+
+## Areal Data Structure: Single vs Multiple Observations
+
+:::{.fragment}
+- Standard CAR assumes one value per area; real data often contain multiple observations per area;
+:::
+
+:::{.fragment}
+::: columns
+::: {.column width="50%"}
+![](sartf_pt.png)
+:::
+
+:::{.column width="50%"}
+![](sartf_pts.png)
+:::
+:::
+:::
+
+## Multilevel CAR Model {.scrollable transition="slide"}
+
+::: {.fragment .fade-in}
+
+- When handling $j$ observations within each area $i$, @eq-mlvcar closely resembles GWR, with the exception of the $\phi$ component.
+- Let $y_j(s)$ represent property price observed at the $s-$th area. Then
+:::
+
+::: {.fragment .fade-in}
+
+$$
+\begin{aligned}
+y_j(s) &= \sum_{k=1}^p \beta_k x_{kj}(s) + \varepsilon_j(s) + \phi(s)\\
+\end{aligned}
+$$ {#eq-mlvcar}
+
+- where $\boldsymbol{\varepsilon}_k \sim \mathcal{N}(0, \nu^2)$
+
+:::
+
+
+
+## The Models Differences
+
+![](modelcomparison.png)
+
+## The Simulation Framework{#sims1_main}
+
+::: {style="text-align: center;"}
+![](simulation1.png){width="100%"}
+:::
+
+
+<!-- ::: callout-note -->
+<!-- - Generate spatial data under different data-generating processes (CAR, SAR+CAR, GWR) -->
+<!-- - Fit competing models at point-level and area-level -->
+<!-- - Evaluate performance using RMSE and parameter estimates -->
+<!-- ::: -->
+
+
+::: footer
+More details $\rightarrow$ [Simulation 1 Diagram](#sims1)
+:::
+
+
+
+<!-- ### What are they? -->
+
+<!-- -   This study consists of two simulation experiments. -->
+
+<!-- -   Simulation 1 evaluates the performance of CAR and multilevel CAR (mlvCAR) models in comparison with alternative spatial regression models under controlled artificial spatial settings. -->
+
+<!-- -   Simulation 2 investigates how a spatial factor-based model can be used to handle missing values in covariates, while preserving spatial dependence. -->
+
+# Key Results
+
+## Bias Values
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center;"}
+![](bias_area.png){width="100%"}
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center;"}
+![](bias_point.png){width="100%"}
+:::
+:::
+
+:::
+
+::: callout-note
+  
+  - Model performance depends on alignment with the true spatial process (DGP);
+  - CAR provides stable estimates under spatial dependence;
+  - Multilevel CAR further reduces bias for hierarchical data
+  
+:::
+
+## RMSE values
+
+# Appendix
+
+## Appendix A: Simulation diagram {#sims1 .scrollable}
+
+::: {style="text-align: center;"}
+![](experimentdesign0.png){width="80%"}
+:::
+
+[← Back](#sims1_main)
+

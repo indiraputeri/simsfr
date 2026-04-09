@@ -1,0 +1,522 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.4)  5 APR 2026 22:53
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**jims.tex
+(./jims.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+(/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amscls/amsart.cls
+Document Class: amsart 2020/05/29 v2.20.6
+\linespacing=\dimen150
+\normalparindent=\dimen151
+\normaltopskip=\skip49
+(/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip50
+
+For additional information on amsmath, use the `?' option.
+(/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen152
+)) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen153
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count275
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count276
+\leftroot@=\count277
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count278
+\DOTSCASE@=\count279
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen154
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count280
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count281
+\dotsspace@=\muskip17
+\c@parentequation=\count282
+\dspbrk@lvl=\count283
+\tag@help=\toks18
+\row@=\count284
+\column@=\count285
+\maxfields@=\count286
+\andhelp@=\toks19
+\eqnshift@=\dimen155
+\alignsep@=\dimen156
+\tagshift@=\dimen157
+\tagwidth@=\dimen158
+\totwidth@=\dimen159
+\lineht@=\dimen160
+\@envbody=\toks20
+\multlinegap=\skip51
+\multlinetaggap=\skip52
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 397.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+\copyins=\insert252
+\abstractbox=\box55
+\listisep=\skip53
+\c@part=\count287
+\c@section=\count288
+\c@subsection=\count289
+\c@subsubsection=\count290
+\c@paragraph=\count291
+\c@subparagraph=\count292
+\c@figure=\count293
+\c@table=\count294
+\abovecaptionskip=\skip54
+\belowcaptionskip=\skip55
+\captionindent=\dimen161
+\thm@style=\toks22
+\thm@bodyfont=\toks23
+\thm@headfont=\toks24
+\thm@notefont=\toks25
+\thm@headpunct=\toks26
+\thm@preskip=\skip56
+\thm@postskip=\skip57
+\thm@headsep=\skip58
+\dth@everypar=\toks27
+)
+LaTeX Info: Redefining \markboth on input line 2.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/tools/enumerate.sty
+Package: enumerate 2023/07/04 v3.00 enumerate extensions (DPC)
+\@enLab=\toks28
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 2024/01/14 v1.7b (e)psfig emulation (SPQR)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks29
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen162
+\Gin@req@width=\dimen163
+)
+\epsfxsize=\dimen164
+\epsfysize=\dimen165
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
+\LTleft=\skip59
+\LTright=\skip60
+\LTpre=\skip61
+\LTpost=\skip62
+\LTchunksize=\count295
+\LTcapwidth=\dimen166
+\LT@head=\box56
+\LT@firsthead=\box57
+\LT@foot=\box58
+\LT@lastfoot=\box59
+\LT@gbox=\box60
+\LT@cols=\count296
+\LT@rows=\count297
+\c@LT@tables=\count298
+\c@LT@chunks=\count299
+\LT@p@ftn=\toks30
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen167
+\lightrulewidth=\dimen168
+\cmidrulewidth=\dimen169
+\belowrulesep=\dimen170
+\belowbottomsep=\dimen171
+\aboverulesep=\dimen172
+\abovetopsep=\dimen173
+\cmidrulesep=\dimen174
+\cmidrulekern=\dimen175
+\defaultaddspace=\dimen176
+\@cmidla=\count300
+\@cmidlb=\count301
+\@aboverulesep=\dimen177
+\@belowrulesep=\dimen178
+\@thisruleclass=\count302
+\@lastruleclass=\count303
+\@thisrulewidth=\dimen179
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/base/graphpap.sty
+Package: graphpap 1994/08/09 v1.0c Standard LaTeX graphpap package (LL)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count304
+\float@exts=\toks31
+\float@box=\box61
+\@float@everytoks=\toks32
+\@floatcapt=\box62
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2026/03/08 line numbers on paragraphs v5.9
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count305
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+))
+\linenopenalty=\count306
+\output=\toks33
+\linenoprevgraf=\count307
+\linenumbersep=\dimen180
+\linenumberwidth=\dimen181
+\c@linenumber=\count308
+\c@pagewiselinenumber=\count309
+\c@LN@truepage=\count310
+\c@internallinenumber=\count311
+\c@internallinenumbers=\count312
+\quotelinenumbersep=\dimen182
+\bframerule=\dimen183
+\bframesep=\dimen184
+\bframebox=\box63
+\@LN@amsmath@ams@eqpen=\count313
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2026-01-29 v7.01p Hypertext links for LaTeX
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count314
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
+)
+\@linkdim=\dimen185
+\Hy@linkcounter=\count315
+\Hy@pagecounter=\count316
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2026-01-29 v7.01p Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count317
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2026-01-29 v7.01p Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4201.
+Package hyperref Info: Link nesting OFF on input line 4206.
+Package hyperref Info: Hyper index ON on input line 4209.
+Package hyperref Info: Plain pages OFF on input line 4216.
+Package hyperref Info: Backreferencing OFF on input line 4221.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4468.
+\c@Hy@tempcnt=\count318
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4807.
+\XeTeXLinkMargin=\dimen186
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count319
+\Field@Width=\dimen187
+\Fld@charsize=\dimen188
+Package hyperref Info: Hyper figures OFF on input line 6084.
+Package hyperref Info: Link nesting OFF on input line 6089.
+Package hyperref Info: Hyper index ON on input line 6092.
+Package hyperref Info: backreferencing OFF on input line 6099.
+Package hyperref Info: Link coloring OFF on input line 6104.
+Package hyperref Info: Link coloring with OCG OFF on input line 6109.
+Package hyperref Info: PDF/A mode OFF on input line 6114.
+\Hy@abspage=\count320
+\c@Item=\count321
+\c@Hfootnote=\count322
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2026-01-29 v7.01p Hyperref driver for pdfTeX
+\Fld@listcount=\count323
+\c@bookmark@seq@number=\count324
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
+)
+\Hy@SectionHShift=\skip63
+)
+\c@theorem=\count325
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count326
+) (./jims.aux (./mak.aux))
+\openout1 = `jims.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 49.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+) (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/Users/indiraputeri/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+Package hyperref Info: Link coloring OFF on input line 49.
+ (./jims.out) (./jims.out)
+\@outlinefile=\write3
+\openout3 = `jims.out'.
+
+\openout2 = `mak.aux'.
+
+
+No file mak.tex.
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+
+ []
+
+
+Overfull \vbox (3.09544pt too high) has occurred while \output is active []
+
+
+Overfull \vbox (3.09544pt too high) has occurred while \output is active []
+
+ [1
+
+
+
+{/Users/indiraputeri/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [2]
+Overfull \hbox (1.56114pt too wide) in paragraph at lines 193--200
+\OT1/cmr/m/n/10 model per-for-mance un-der con-trolled data-generating mech-a-nisms, par-tic-u-larly when
+ []
+
+<../figures/experimentdesign0.png, id=110, 2097.8375pt x 1456.44125pt>
+File: ../figures/experimentdesign0.png Graphic file (type png)
+<use ../figures/experimentdesign0.png>
+Package pdftex.def Info: ../figures/experimentdesign0.png  used on input line 214.
+(pdftex.def)             Requested size: 287.61942pt x 199.67792pt.
+[3 <../figures/experimentdesign0.png>]
+<../figures/artfcountry_plot.png, id=127, 722.7pt x 505.89pt>
+File: ../figures/artfcountry_plot.png Graphic file (type png)
+<use ../figures/artfcountry_plot.png>
+Package pdftex.def Info: ../figures/artfcountry_plot.png  used on input line 249.
+(pdftex.def)             Requested size: 323.5684pt x 226.49821pt.
+<../figures/nb_artfcountry.png, id=129, 825.0825pt x 841.1425pt>
+File: ../figures/nb_artfcountry.png Graphic file (type png)
+<use ../figures/nb_artfcountry.png>
+Package pdftex.def Info: ../figures/nb_artfcountry.png  used on input line 268.
+(pdftex.def)             Requested size: 215.71593pt x 219.9112pt.
+ [4 <../figures/artfcountry_plot.png>] [5 <../figures/nb_artfcountry.png>]
+<../figures/density_points_plot.png, id=153, 1395.2125pt x 1055.945pt>
+File: ../figures/density_points_plot.png Graphic file (type png)
+<use ../figures/density_points_plot.png>
+Package pdftex.def Info: ../figures/density_points_plot.png  used on input line 317.
+(pdftex.def)             Requested size: 287.61942pt x 217.67856pt.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <7> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 345.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 345.
+ [6 <../figures/density_points_plot.png>] [7]
+
+LaTeX Warning: Command \textendash invalid in math mode on input line 445.
+
+[8]
+
+LaTeX Warning: Reference `eq-gwr' on page 9 undefined on input line 519.
+
+
+LaTeX Warning: Reference `eq-car' on page 9 undefined on input line 552.
+
+
+LaTeX Warning: Reference `eq-jointysar' on page 9 undefined on input line 561.
+
+
+LaTeX Warning: Reference `eq-sar' on page 9 undefined on input line 563.
+
+[9] [10]
+<../figures/bias_point.png, id=196, 717.6411pt x 569.0058pt>
+File: ../figures/bias_point.png Graphic file (type png)
+<use ../figures/bias_point.png>
+Package pdftex.def Info: ../figures/bias_point.png  used on input line 678.
+(pdftex.def)             Requested size: 305.59665pt x 242.30614pt.
+ [11 <../figures/bias_point.png>]
+<../figures/bias_area.png, id=204, 717.6411pt x 569.0058pt>
+File: ../figures/bias_area.png Graphic file (type png)
+<use ../figures/bias_area.png>
+Package pdftex.def Info: ../figures/bias_area.png  used on input line 729.
+(pdftex.def)             Requested size: 305.59665pt x 242.30614pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12]
+<../figures/rmseplot.png, id=209, 717.6411pt x 583.9416pt>
+File: ../figures/rmseplot.png Graphic file (type png)
+<use ../figures/rmseplot.png>
+Package pdftex.def Info: ../figures/rmseplot.png  used on input line 782.
+(pdftex.def)             Requested size: 305.59665pt x 248.66641pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13 <../figures/bias_area.png>] [14 <../figures/rmseplot.png>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 809.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\rho' on input line 809.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 809.
+
+<../figures/rhos.png, id=224, 717.6411pt x 569.0058pt>
+File: ../figures/rhos.png Graphic file (type png)
+<use ../figures/rhos.png>
+Package pdftex.def Info: ../figures/rhos.png  used on input line 822.
+(pdftex.def)             Requested size: 359.5229pt x 285.05786pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [15] [16 <../figures/rhos.png>] (./jims.bbl [17]) [18] (./jims.aux (./mak.aux))
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `jims.out' has not changed.
+(rerunfilecheck)             Checksum: 4514388801B939640E0FDBF5C76EB46B;2140.
+ ) 
+Here is how much of TeX's memory you used:
+ 10889 strings out of 469278
+ 166789 string characters out of 5463056
+ 584318 words of memory out of 5000000
+ 39331 multiletter control sequences out of 15000+600000
+ 643134 words of font info for 102 fonts, out of 8000000 for 9000
+ 197 hyphenation exceptions out of 8191
+ 72i,9n,79p,834b,642s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></Users/indiraputeri/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on jims.pdf (18 pages, 2644748 bytes).
+PDF statistics:
+ 351 PDF objects out of 1000 (max. 8388607)
+ 269 compressed objects within 3 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+

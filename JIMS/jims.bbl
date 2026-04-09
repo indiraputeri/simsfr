@@ -1,0 +1,73 @@
+\begin{thebibliography}{10}
+
+\bibitem{cressie2015statistics}
+N.~Cressie, {\em Statistics for Spatial Data}.
+\newblock John Wiley \& Sons, 2015.
+
+\bibitem{stewart2018localized}
+I.~Stewart, W.~Sun, and S.~Banerjee, ``Localized factor analysis for spatially distributed multivariate data,'' {\em Biometrika}, vol.~105, no.~3, pp.~599--615, 2018.
+
+\bibitem{yang2019does}
+L.~Yang, J.~Zhou, O.~F. Shyr, {\em et~al.}, ``Does bus accessibility affect property prices?,'' {\em Cities}, vol.~84, pp.~56--65, Jan. 2019.
+
+\bibitem{soltani2021housing}
+A.~Soltani, C.~J. Pettit, M.~Heydari, and F.~Aghaei, ``Housing price variations using spatio-temporal data mining techniques,'' {\em Journal of Housing and the Built Environment}, vol.~36, pp.~1--29, Jan. 2021.
+
+\bibitem{besag1974spatial}
+J.~Besag, ``Spatial interaction and the statistical analysis of lattice systems,'' {\em Journal of the Royal Statistical Society: Series B}, vol.~36, no.~2, pp.~192--236, 1974.
+
+\bibitem{lee2011comparison}
+D.~Lee and R.~Mitchell, ``A comparison of conditional autoregressive models used in bayesian disease mapping,'' {\em Spatial and Spatio-temporal Epidemiology}, vol.~2, no.~2, pp.~79--89, 2011.
+
+\bibitem{lee2013carbayes}
+D.~Lee, ``Carbayes: An r package for bayesian spatial modeling with conditional autoregressive priors,'' {\em Journal of Statistical Software}, vol.~55, no.~13, pp.~1--24, 2013.
+
+\bibitem{byrne2020bayesian}
+C.~D. Byrne, G.~Napier, and D.~Lee, ``A bayesian hierarchical model for spatially varying covariate effects,'' {\em Spatial Statistics}, vol.~35, p.~100405, 2020.
+
+\bibitem{banerjee2014hierarchical}
+S.~Banerjee, B.~P. Carlin, and A.~E. Gelfand, {\em Hierarchical modeling and analysis for spatial data}.
+\newblock CRC press, July 2014.
+
+\bibitem{browning2020simple}
+S.~Browning, D.~Lee, and et~al., ``A simple approach for fitting car and icar models in stan,'' {\em arXiv preprint arXiv:2001.07848}, 2020.
+
+\bibitem{Lawson2015A}
+A.~Lawson, C.~Rotejanaprasert, P.~Moraga, and J.~Choi, ``A shared neighbor conditional autoregressive model for small area spatial data,'' {\em Environmetrics}, vol.~26, pp.~383 -- 392, 2015.
+
+\bibitem{golgher2016interpret}
+A.~B. Golgher and P.~R. Voss, ``How to interpret the coefficients of spatial models: Spillovers, direct and indirect effects,'' {\em Spatial Demography}, vol.~4, pp.~175--205, 2016.
+
+\bibitem{LeSage2014}
+J.~P. LeSage and R.~K. Pace, {\em Interpreting Spatial Econometric Models}, pp.~1535--1552.
+\newblock Springer Berlin Heidelberg, 2014.
+
+\bibitem{brunsdon1996geographically}
+C.~Brunsdon, A.~S. Fotheringham, and M.~Charlton, ``Geographically weighted regression: A method for exploring spatial nonstationarity,'' {\em Geographical Analysis}, vol.~28, no.~4, pp.~281--298, 1996.
+
+\bibitem{fotheringham2003geographically}
+A.~S. Fotheringham, C.~Brunsdon, and M.~Charlton, {\em Geographically Weighted Regression: The Analysis of Spatially Varying Relationships}.
+\newblock Chichester: Wiley, 2003.
+
+\bibitem{lu2014spatially}
+B.~Lu, M.~Charlton, P.~Harris, and A.~S. Fotheringham, ``Spatially varying relationships between land prices and explanatory variables in nanjing, china,'' {\em Journal of Geographical Systems}, vol.~16, pp.~173--193, 2014.
+
+\bibitem{harris2010regression}
+P.~Harris, A.~S. Fotheringham, and R.~Crespo, ``Regression modelling of spatially varying relationships: a gwr tutorial,'' {\em Journal of Spatial Science}, vol.~55, no.~1, pp.~69--95, 2010.
+
+\bibitem{kinasih2025conditionally}
+I.~P. Kinasih, H.~Jamil, and E.~Leong, ``Conditionally autoregressive models for house price data: Insights from a comparative simulation study,'' {\em Journal of Statistical Theory and Applications}, pp.~1--27, 2025.
+
+\bibitem{morris2019using}
+T.~P. Morris, I.~R. White, and M.~J. Crowther, ``Using simulation studies to evaluate statistical methods,'' {\em Statistics in medicine}, vol.~38, no.~11, pp.~2074--2102, 2019.
+
+\bibitem{kim2013logistic}
+Y.~Kim, Y.-K. Choi, and S.~Emery, ``Logistic regression with multiple random effects: a simulation study of estimation methods and statistical packages,'' {\em The American Statistician}, vol.~67, no.~3, pp.~171--182, 2013.
+
+\bibitem{burton2006design}
+A.~Burton, D.~G. Altman, P.~Royston, and R.~L. Holder, ``The design of simulation studies in medical statistics,'' {\em Statistics in medicine}, vol.~25, no.~24, pp.~4279--4292, 2006.
+
+\bibitem{okabe2009spatial}
+A.~Okabe, B.~Boots, K.~Sugihara, and S.~N. Chiu, ``Spatial tessellations: concepts and applications of voronoi diagrams,'' 2009.
+
+\end{thebibliography}

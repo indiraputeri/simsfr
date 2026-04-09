@@ -1,0 +1,11 @@
+---
+title: "Test Paper"
+author: "Your Name"
+format:
+  pdf:
+    template: JIMS/JIMS.tex
+---
+
+## Hello
+
+This is a test.

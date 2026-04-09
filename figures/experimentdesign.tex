@@ -1,0 +1,56 @@
+\documentclass[border=5pt]{article}
+\usepackage[margin=0.7in]{geometry}
+\pagestyle{empty}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{center}
+\begin{tikzpicture}[
+  node distance=9mm and 12mm, >=Stealth,
+  block/.style={rectangle,draw,align=center,minimum width=52mm,minimum height=8mm},
+  smallblock/.style={rectangle,draw,align=center,minimum width=45mm,minimum height=8mm},
+  font=\small
+]
+
+\tikzset{
+  connect/.style={-{Latex[length=2mm,width=1.6mm]}, line cap=round, shorten >=1pt, shorten <=1pt}
+}
+
+% your nodes
+\node[block](region){Artificial region (216 polygons)};
+\node[block,below=of region](W){Neighbourhood $W$ (adjacency)};
+\node[block,below=of W](dens){Density pattern (central belt high)};
+\node[block,below=of dens](pts){Generate points: $N=4314$};
+\node[block,below=of pts](covs){Covariates: land, building, bedrooms, bathrooms};
+
+% vertical chain — arrows touch boxes
+\draw[connect] (region.south) -- (W.north);
+\draw[connect] (W.south)      -- (dens.north);
+\draw[connect] (dens.south)    -- (pts.north);
+\draw[connect] (pts.south)     -- (covs.north);
+
+\node[smallblock,below left=of covs,xshift=-10mm](car){DGP 1: CAR\\($\sigma^2_\phi=0.2$)};
+\node[smallblock,below=of covs](sarcar){DGP 2: SAR+CAR\\($\rho=0.6,\ \sigma^2_\phi=0.6$)};
+\node[smallblock,below right=of covs,xshift=10mm](gwr){DGP 3: GWR\\($\beta=\beta(x,y)$)};
+
+\node[block,below=14mm of sarcar](split){Split: Area-level \& Point-level datasets};
+\node[block,below=of split](models){Fit models:\\Area: GLM, SAR, CAR \quad | \quad Point: GWR, GLMM, mlvCAR};
+\node[block,below=of models](loop){Repeat simulations: $sim=1000$};
+\node[block,below=of loop](metrics){Compute: Bias, RMSE};
+
+\draw[->](region)--(W);
+\draw[->](W)--(dens);
+\draw[->](dens)--(pts);
+\draw[->](pts)--(covs);
+\draw[->](covs)--(car);
+\draw[->](covs)--(sarcar);
+\draw[->](covs)--(gwr);
+\draw[->](car)--(split);
+\draw[->](sarcar)--(split);
+\draw[->](gwr)--(split);
+\draw[->](split)--(models);
+\draw[->](models)--(loop);
+\draw[->](loop)--(metrics);
+\end{tikzpicture}
+\end{center}
+\end{document}

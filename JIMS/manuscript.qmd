@@ -1,0 +1,526 @@
+```{r setup, include=FALSE}
+library(spdep)
+library(sf)
+library(sp)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+```
+
+# Simulation & Performance Analysis on Conditionally Autoregressive Model
+
+> *"All models are wrong, but some are useful." (George E.P. Box)*
+
+<!-- This chapter constructs an artificial study region and synthetic house-price datasets to stress-test spatial models under controlled conditions. The design mirrors Lombok’s areal structure and heterogeneity so that the evidence directly informs the applied chapters. -->
+
+This chapter constructs a controlled simulation environment to rigorously examine the behaviour of the \acr{CAR} model under diverse spatial conditions. Using an artificial study region designed to emulate real-world areal heterogeneity, the analysis evaluates how \acr{CAR} responds to varying spatial data-generating processes, specifically those governed by \acr{CAR}, \acr{SAR}+\acr{CAR}, and \acr{GWR} frameworks. The experiments focus on how well \acr{CAR} captures underlying spatial dependence, how its estimates behave under model misspecification, and how its predictions compare across settings that differ in spatial structure. By systematically varying these conditions, the simulation results illuminate the reliability, strengths, and potential limits of \acr{CAR}-based inference, laying the groundwork for its later application to real-world housing data.
+
+## Scope and motivation
+
+The aim is to assess the performance of spatial regression models, particularly the \acr{CAR} model through controlled simulation experiments. Earlier chapters covered GIS data preparation, neighbourhood construction, Moran’s I, and standard spatial regression specifications; here the focus shifts to evaluating the robustness and predictive accuracy of the \acr{CAR} model in a setting with known spatial structure.
+
+We prioritise \acr{CAR} because it is purpose-built for areal (lattice) data and offers four advantages that matter for house-price applications:
+
+1)  **Appropriate dependence for areal units.** \acr{CAR} encodes local smoothing directly through the neighbourhood graph, handling irregular polygons and unequal numbers of neighbours without forcing a global lag on the response. This is well suited to sub-district (*mukim/kecamatan*) price variation driven by local amenities and zoning.
+
+2)  **Clean separation of effects.** By modelling spatial dependence as a random effect, \acr{CAR} lets covariate coefficients remain globally interpretable and avoids the coefficient shrinkage/instability that can arise when spatial structure is pushed into the mean (as in some \acr{SAR}/\acr{GWR} formulations).
+
+3)  **Flexibility and extensibility.** \acr{CAR} components integrate naturally in hierarchical models (\acr{mlvCAR}, BYM \footnote{a spatial statistical model that explains area-level data using two components: one capturing similarities between neighbouring areas (spatial structure) and one capturing random region-specific noise.}/Leroux variants), interact well with factor-analytic measurement layers, and support joint modelling with missing-data augmentation—features we exploit in this chapter.
+
+4)  **Computational efficiency.** The sparse precision structure of \acr{CAR} scales to many areas and enables stable \acr{MCMC}/INLA \footnote{a fast alternative to MCMC for Bayesian inference, especially designed for spatial and hierarchical models, implemented in an R package called INLA} computations and straightforward posterior prediction at the areal level.
+
+Given these properties, \acr{CAR} is a natural baseline and, in many settings, the preferred workhorse, for spatial modelling of house prices aggregated to small areas. We therefore benchmark \acr{CAR} against \acr{GWR} and \acr{SAR} to clarify when its advantages translate into superior empirical performance.
+
+We compare \acr{CAR} against two common alternatives: \acr{GWR} and \acr{SAR} model, using metrics such as bias, interval coverage, and \acr{RMSE} values. The results highlight where \acr{CAR} performs well, where it does not, and how it stacks up against \acr{GWR} and \acr{SAR}. The findings provide practical guidance for model choice in empirical house-price research, especially in contexts resembling Lombok’s heterogeneous housing market.
+
+## Simulation design
+
+We construct an artificial study region partitioned into multiple areal units. Each area contains several observation points with known planar coordinates $(x,y)$, and at every point we record four covariates $X_1, X_2, X_3,$ and $X_4$.
+
+Stacking all points yields a dataset with $N$ rows (one row per point), and columns for area/point identifiers, coordinates, and the covariates. In other words, the design has $k=4$ covariates $(X_1,\ldots,X_4)$ in addition to the coordinates and IDs.
+
+This point-level dataset is then used to generate the response $Y$ under three alternative data-generating scenarios; the specific mechanisms and parameter settings are described later in the chapter.
+
+### Artificial Study Region
+
+The experiment begins with the construction of an artificial spatial region consisting of 216 polygons, each representing a distinct areal unit. We draw $K=216$ seed points uniformly inside a Lombok bounding window (WGS 84 \footnote{World Geodetic System, a global standard for measuring locations on Earth.}; $[116.0^\circ,\,116.5^\circ]\mathrm{E},\,[8.5^\circ,\,8.0^\circ]\mathrm{S}$) and apply a **Voronoi**\footnote{A spatial partition where each region consists of all points closer to one seed than to any other} tessellation to obtain an irregular lattice [@okabe2009spatial]. The tessellation is then clipped to the window, small sliver cells are removed using a minimum–area rule, and the result is stored as an `sf` layer with CRS EPSG:4326. \footnote{Coordinate reference system - European petroleum survey group. It is a coordinate reference system defined by an EPSG code, such as EPSG:4326 for WGS 84.} This yields an areal partition of 216 polygons with realistic variation in size and number of neighbours.
+
+A map of the final lattice and its neighbourhood graph is shown in @fig-artfreg and serves as the fixed spatial support for all simulations.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: fig-artfreg
+#| fig-cap: "Artificial areal partition (216 units). Voronoi polygons clipped to a bounding box; grey lines show polygon boundaries."
+#| out-width: "80%"
+#| fig-align: "center"
+#| fig-pos: "H"
+
+knitr::include_graphics("figures/artfcountry_plot.png", auto_pdf = TRUE)
+```
+
+The resulting neighbour graph for the artificial region is shown in @fig-neighartfreg. Edges connect polygons that are neighbours (as defined in Chapter 2), providing a visual summary of the spatial connectivity that underlies the simulations.
+
+<!-- observation points and covariates are generated within polygons, and the contiguity matrix $W$ (shared‐border adjacency) is derived from the polygon boundaries to parameterise the CAR prior. -->
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: fig-neighartfreg
+#| fig-cap: "Neighbourhood structure of the artificial region. This figure illustrates the spatial connectivity between polygons in the artificial study region, where each line represents a defined neighbour relationship based on spatial adjacency"
+#| out-width: "60%"
+#| fig-align: "center"
+#| fig-pos: "H"
+
+knitr::include_graphics("figures/nb_artfcountry.png", auto_pdf = TRUE)
+```
+
+### Synthetic density and point generation
+
+To emulate realistic spatial variation, the artificial region is endowed with a density pattern in which a central horizontal belt exhibits higher housing density, an abstraction inspired by Lombok’s population and development gradient. Density is not used as a covariate in subsequent models; instead, it controls how many observation points each polygon receives.
+
+Let $y_i$ be the $y$-coordinate of the centroid of area $i$. We define a smooth ridge centered at $\bar y$ with Gaussian decay and mild noise, $$
+d_i^\star \;=\; \exp\!\left\{-\frac{(y_i-\bar y)^2}{2\sigma^2}\right\} \;+\; \varepsilon_i,
+\qquad \varepsilon_i \sim \mathcal N(0,\sigma_\varepsilon^2),
+$$ truncate below a small floor, and rescale to $[500,1000]$: $$
+d_i \;=\; 500 \;+\; 500\,\frac{d_i^\star-\min(d^\star)}{\max(d^\star)-\min(d^\star)} \;\in\; [500,1000].
+$$
+
+For each area $i$, the number of point locations is a bounded affine function of $d_i$,
+
+$$
+n_i \;=\; \mathrm{clip}\!\left\{\;\Big\lfloor m_{\min}
++ s\,(m_{\max}-m_{\min})\,\frac{d_i-500}{1000}\Big\rceil,\; m_{\min},\; m_{\max}\right\},
+$$
+
+with $m_{\min}=5$, $m_{\max}=150$, and scaling factor $s=0.7$. Points are then sampled uniformly within each polygon. In practice, this yields $4{,}314$ points across **216** polygons, with **5–56** points per polygon, reflecting higher concentration in the central belt. @fig-pointsonmap shows the resulting point-level distribution.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: fig-pointsonmap
+#| fig-cap: "Artificial study region with observation points. The points represent data locations within each polygon, simulating real-world spatial observations for the purpose of model analysis and validation."
+#| out-width: "80%"
+#| fig-align: "center"
+
+knitr::include_graphics("figures/density_points_plot.png", auto_pdf = TRUE)
+```
+
+In practice, polygons with higher density yield more observations, mimicking the fact that densely populated urban centres typically host more housing transactions. A total of 4,314 points were generated across the 216 polygons, with each polygon containing between 5 and 56 observations. Figure @fig-pointsonmap depicts this point-level distribution.
+
+### Covariate Generation
+
+Each observation point is assigned four structural attributes used as explanatory variables for prices: land size ($X_1$), building size ($X_2$), bedrooms ($X_3$), and bathrooms ($X_4$). To induce realistic co-movement, the point-level vector $\mathbf{X}_i=(X_{i1},X_{i2},X_{i3},X_{i4})^\top$ is drawn from a multivariate normal distribution:
+
+$$
+\mathbf{X}_i \sim \mathcal N_4(\,\boldsymbol\mu,\;\boldsymbol\Sigma\,), 
+\qquad 
+\boldsymbol\mu = (300,\,120,\,3,\,2)^\top .
+$$
+
+The covariance is built from standard deviations $\{50,\,30,\,1,\,1\}$ and a target correlation matrix $\mathbf R$ (e.g., $\rho_{12}=0.8$, $\rho_{13}=0.5$, $\rho_{23}=0.6$, $\rho_{34}=0.7$):
+
+$$
+\boldsymbol\Sigma = \mathbf D\,\mathbf R\,\mathbf D ,
+\qquad \mathbf D=\operatorname{diag}(50,\,30,\,1,\,1).
+$$
+
+Draws are mapped to plausible ranges: $X_1\in[100,1500]$ m$^2$, $X_2\in[40,800]$ m$^2$, $X_3\in\{1,\dots,5\}$, and $X_4\in\{1,\dots,3\}$ (by rounding and truncation). A representative slice is shown in Table @tbl-covrstr.
+
+For areal analyses, point-level covariates are averaged within polygons:
+
+$$
+\bar X_{Aj} \;=\; \frac{1}{n_A}\sum_{i\in A} X_{ij}, \qquad j=1,\ldots,4,
+$$
+
+where $A$ indexes polygons and $n_A$ is the number of points in polygon $A$. As a diagnostic, Moran’s I ($1000$ permutations) is computed on these area-level means to gauge residual spatial autocorrelation introduced by aggregation.
+
+A representative slice of this dataset is shown in @tbl-covrstr.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: tbl-covrstr
+#| tbl-cap: "Slice of generated dataset as covariates for simulations"
+#| eval: true
+
+library(kableExtra)
+
+dat <- readRDS("data/gen_dat_v3.rds")
+dat <- dat %>% st_drop_geometry(NULL) %>%
+  select(-geometry) %>%
+  rename(density = population_density,
+         bedrooms = bedrooms,
+         bathrooms = bathrooms)
+
+# Specify the pattern you want for the IDs
+desired_pattern <- c(1, 1, 2, 2, 2, 3, 4, 4)
+
+# Count occurrences of each ID in the desired pattern
+pattern_count <- table(desired_pattern)
+
+# Create a subset based on `desired_pattern` without excessive rows
+dat_pattern <- dat %>%
+  filter(ID %in% names(pattern_count)) %>%
+  group_by(ID) %>%
+  filter(row_number() <= pattern_count[as.character(ID)]) %>%
+  ungroup() %>%
+  select(-area, -density) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+
+# Convert all to character for binding
+dat_chr <- dat_pattern %>% mutate(across(everything(), as.character))
+
+# Create ellipsis row
+ellipsis_row <- as.data.frame(matrix("$\\vdots$", nrow = 1, ncol = ncol(dat_pattern)))
+colnames(ellipsis_row) <- colnames(dat_pattern)
+
+# Combine
+dat_final <- bind_rows(dat_chr, ellipsis_row)
+
+# Display table
+kbl(dat_final,
+    col.names = c("ID", "Land size", "Building size", "Bedrooms", "Bathrooms"),
+    escape = FALSE,
+    booktabs = TRUE,
+    longtable = TRUE) %>%
+  kable_styling(font_size = 9)
+
+```
+
+### Generating $Y$: Three different \acr{DGP}s
+
+Given the covariates $\mathbf X$ and the artificial areal lattice, we simulate the response $Y$ under three spatial \acr{DGP}s: \acr{CAR}, \acr{SAR}+\acr{CAR}, and \acr{GWR}. All three data-generating processes use the same covariate standardisation, neighbourhood support, and output construction.
+
+For point $j$ in area $a$ and covariate $k\in\{1,2,3,4\}$, $$
+X_{ajk}^{\text{std}} \;=\; \frac{X_{ajk} - \bar X_k}{s_k},
+$$ where $\bar X_k$ and $s_k$ are the global mean and standard deviation computed over all points. The point-level design vector includes an intercept, $$
+\mathbf x_{aj} \;=\; \big(1,\;X_{aj1}^{\text{std}},\;X_{aj2}^{\text{std}},\;X_{aj3}^{\text{std}},\;X_{aj4}^{\text{std}}\big)^\top .
+$$
+
+The artificial lattice and polygon contiguity are fixed across scenarios (@fig-neighartfreg). The binary adjacency matrix is $\mathbf W$ with diagonal matrix $\mathbf D=\mathrm{diag}(d_{aa})$, $d_{aa}=\sum_b w_{ab}$.
+
+Coefficient values are calibrated from a beta function that is inspired from \acr{GWR} concept about spatially varying coefficients as a function of location coordinate, where in this context it refer to areas centroid $(x_a, y_a)$, with components specified as trigonometric–linear trends plus small Gaussian noise (@eq-betas)
+
+$$
+\beta_k(\mathbf s_a)
+\;=\;
+b_k
+\;+\; c_{k1}\,\sin(dx_a)
+\;+\; c_{k2}\,\cos(dy_a)
+\;+\; c_{k3}\,x_a
+\;+\; c_{k4}\,y_a
+\;+\; \varepsilon_k ,
+$$ {#eq-betas}
+
+The $sine–cosine$ terms create smooth, oscillating spatial patterns, the linear terms impose gentle large-scale gradients, and the small Gaussian perturbations $\varepsilon_k$ add local variability while keeping the surfaces smooth (smaller variance for $\beta_3,\beta_4$ yields tighter fields for room counts). Evaluating these functions at polygon centroids yields area-specific coefficients that vary continuously across the map but remain constant within each polygon, which is consistent with the \acr{GWR} design used in the simulations. values in @eq-params are the mean column of beta matrix. it yields:
+
+$$
+\boldsymbol{\beta}=(1,\;0.9,\;0.7,\;0.5,\;0.3)^\top,\qquad
+\sigma_\varepsilon^2=0.2,\qquad
+\sigma_\phi^2=0.6,\qquad
+\rho=0.6 .
+$$ {#eq-params}
+
+The idiosyncratic noise $\sigma_\varepsilon^2 = 0.2$ and the spatial variance $\sigma_\phi^2 = 0.6$ imply a spatial-to-nugget variance ratio of roughly $3{:}1$, so spatial structure is pronounced but does not overwhelm the mean signal. The spatial dependence parameter $\rho = 0.6$ induces moderate smoothing—strong enough to capture local spillovers while avoiding numerical instability near the unit boundary. Using the same $(\boldsymbol{\beta},\sigma_\varepsilon^2,\sigma_\phi^2,\rho)$ for \acr{CAR}, \acr{SAR}+\acr{CAR}, and GWR isolates differences attributable to the dependence mechanism rather than to changes in signal strength.
+
+Each scenario constructs a log-outcome $\ell_{aj}$, then maps to the original scale via $$
+Y_{aj} \;=\; \exp(\,\ell_{aj}\,).
+$$
+
+From every simulated dataset we export: $$
+\text{Point level: }\{\,Y_{aj},\ell_{aj},\mathbf x_{aj},a\,\}; \qquad
+\text{Area level: } \Big\{\ \bar X_{Ak}=\frac{1}{n_A}\sum_{j\in A}X_{Ajk},\ \ \tilde Y_A=\operatorname{median}\{Y_{Aj}\}\ \Big\}.
+$$ For comparability, area-level covariates are re-standardised using the same global $(\bar X_k,s_k)$.
+
+**Scenario 1:** \acr{GWR} \acr{DGP}s (spatial varying coefficients) <!-- Pada skenario ini, data dibangkitkan dengan menggunakan @eq-gwr dan menggunakan nilai beta per poligon yang dihasilkan dari fungsi pada @eq-betas. -->
+
+In this scenario, the data are generated according to the \acr{GWR} framework, which assumes that relationships between the response variable and its explanatory variables vary across space rather than remaining constant (see Chapter 2). Unlike global regression models where a single parameter vector $\boldsymbol{\beta}$ applies uniformly to all locations, the \acr{GWR} model assigns location-specific coefficients $\boldsymbol{\beta}(\mathbf{s}_i)$ for each spatial point $i$, allowing local variations to emerge naturally.
+
+The coefficient surfaces $\boldsymbol{\beta}(\mathbf{s}_i)$ vary smoothly across space, allowing each location $\mathbf{s}_i$ to have its own set of regression coefficients. These coefficients are generated as smooth functions of the spatial coordinates $(x_i, y_i)$, incorporating minor random noise to introduce spatial heterogeneity. The overall structure follows the formulation in @eq-betas.
+
+Using these locally varying coefficients, the response variable is generated as $$
+Y_i \;=\; \beta_0(\mathbf{s}_i)
+\;+\; \beta_1(\mathbf{s}_i) X_{i1}
+\;+\; \beta_2(\mathbf{s}_i) X_{i2}
+\;+\; \beta_3(\mathbf{s}_i) X_{i3}
+\;+\; \beta_4(\mathbf{s}_i) X_{i4}
+\;+\; \varepsilon_i,
+$$ {#eq-gwrgdp}
+
+which is derive from @eq-gwr, where $\varepsilon_i \sim \mathcal{N}(0, \sigma_{\epsilon}^2)$ represents independent random noise. This approach ensures that each observation reflects a locally adaptive relationship between the dependent and independent variables, producing a spatially heterogeneous dataset ideal for evaluating \acr{GWR}’s ability to recover spatially varying coefficients.
+
+**Scenario 2:** \acr{CAR} \acr{DGP}s (areal random effect)\
+In the \acr{CAR} data generation process, the spatial effect $\boldsymbol{\phi}$ serves as the key component that induces spatial dependence among areas in the artificial region. The neighbourhood structure used in this process follows the same spatial adjacency matrix $\mathbf{W}$ defined earlier for the artificial polygons, where two areas are considered neighbours if they share a common boundary.
+
+The spatial random effects $\boldsymbol{\phi}$ are generated using the `mvrnorm` function, which draws from a multivariate Gaussian distribution following the Leroux prior formulation [@leroux2000estimation; @MacNab2003Hierarchical; @lee2011comparison]:
+
+$$
+\boldsymbol{\phi} \mid \mathbf{W}, \tau^2, \rho, \boldsymbol{\mu}
+\sim \mathcal{N}\!\left(
+\boldsymbol{\mu},\;
+\tau^2 \left[ \rho \mathbf{W}^* + (1 - \rho)\mathbf{I}_n \right]^{-1}
+\right)
+$$ {#eq-lerouxjoint}
+
+Here, $\mathbf{W}^*$ represents a combination of neighbour connectivity and self-dependence terms, defined as $\mathbf{W}^* = \mathbf{D} - \mathbf{W}$, where $\mathbf{D}$ is a diagonal matrix whose elements correspond to the number of neighbours for each area. The term $\rho \mathbf{W}^* + (1 - \rho)\mathbf{I}_n$ forms the precision matrix $\mathbf{Q}$, which controls the degree of spatial smoothness—smaller values of $\rho$ imply weaker spatial association, while values of $\rho$ close to 1 produce stronger spatial autocorrelation. Once the spatial effects $\boldsymbol{\phi}$ are obtained, they are incorporated into the data generation process for $\mathbf{Y}$ according to @eq-car, producing spatially correlated outcomes that reflect the underlying artificial geography.
+
+**Scenario 3:** \acr{SAR} + \acr{CAR} \acr{DGP} (lagged mean + areal effect)\
+In this \acr{DGP}, a combination of \acr{SAR} and \acr{CAR} structures is employed. The procedure consists of two main stages.
+
+In the first stage, the response variable $\mathbf{Y}$ is generated from its joint distribution, as expressed in @eq-jointysar. This approach is adopted due to its practicality and computational efficiency. Generating $\mathbf{Y}$ directly from the standard \acr{SAR} formulation (see @eq-sar) would be considerably more complex, since the value of $y$ in each area depends recursively on the values of $y$ in all neighbouring areas. Consequently, simulating $\mathbf{Y}$ jointly through its covariance structure provides a more tractable and coherent framework. The covariance matrix in this case is defined as $(\sigma^2 (\mathbf{I} - \rho \mathbf{W})^{-1} (\mathbf{I} - \rho \mathbf{W})^{-T})$ where $\rho$ denotes the spatial autoregressive parameter, $\mathbf{I}$ is the identity matrix, and $\mathbf{W}$ is the spatial weight matrix that specifies the neighbourhood relationships among areas.
+
+In the second stage, the spatial random effects $\boldsymbol{\phi}$ just like in @eq-lerouxjoint are incorporated into the \acr{SAR}‐generated outcomes, thereby enriching the spatial structure of the data. This step allows the model to account not only for spatial dependence captured by the \acr{SAR} component but also for localised spatial heterogeneity introduced by the \acr{CAR} component. The resulting data are therefore defined as
+
+$$
+\mathbf{Y}_{SAR+CAR} = \mathbf{Y}_{SAR} + \boldsymbol{\phi}
+$$
+
+This hybrid construction produces spatial data that exhibit both global spatial correlation and localised area‐specific variation, thus providing a more realistic representation of complex spatial processes.
+
+### Simulations
+
+After all simulation components were prepared, experiments were conducted in two iterative sets of $M = 1000$. Each set represents a different data level: point-level and area-level. The first set (point-level data) involved fitting the \acr{mlvCAR}, \acr{GLMM}, and \acr{GWR} models. For the second set (area-level data), the models fitted were \acr{CAR}, \acr{SAR}, and \acr{GLM}.
+
+In the case of \acr{GWR}, since its fitting procedure requires coordinate information for each observation point, the coordinates used were the artificial ones generated during the observation point generation stage (see Section 5.2.2). This approach was taken because, even in real-world settings, it is often difficult to obtain house sale observations, along with their attributes, from web listings that also include complete address information and precise geographic coordinates.
+
+The \acr{CAR} and \acr{mlvCAR} models were estimated using the `CARBayes` package, specifically through the functions `S.CARleroux` and `S.CARmultilevel`, which implement Bayesian inference under the Leroux specification. For the non-spatial counterparts, the \acr{GLMM} and \acr{GLM} models were fitted using the `rstanarm` package (`stan_glmer`) and the base R function `glm`, respectively, allowing comparison between spatial and conventional hierarchical modelling approaches. Meanwhile, spatial dependence based on lag structures and spatially varying relationships were captured through the \acr{SAR} and \acr{GWR} models, implemented using `lagsarlm` and `gwr`.
+
+The values extracted from each simulation include the means of the intercept, regression coefficients, and spatial parameters such as $\hat{\rho}$, $\hat{\sigma}^2_{\epsilon}$, and $\hat{\sigma}^2_{\phi}$. In addition, the standard deviations and confidence intervals for each of these parameters were also computed. The \acr{RMSE} was likewise calculated and stored for every iteration, serving as a complementary measure of model performance.
+
+The simulation results were stored in a structured list object using the `furrr` package to enable parallel execution across multiple iterations. Each simulation run produced a set of outputs, including estimated parameters, spatial parameters, and prediction errors. These outputs were combined using the `do.call()` and `rbind()` functions to form unified data frames for subsequent analysis.
+
+Specifically, the main simulation object `sim_results` contained results from all $M = 1000$ iterations. Each element of this object included:
+
+-   `params`: estimated regression coefficients and intercepts,
+
+-   `params_sp`: spatial parameters such as $\hat{\rho}$, $\hat{\sigma}^2_{\epsilon}$, and $\hat{\sigma}^2_{\phi}$, and
+
+-   `rmses`: \acr{RMSE} values for model performance evaluation.
+
+These components were then extracted and consolidated into three separate data frames, `params_df`, `paramssp_df`, and `rmse_df`, representing the regression, spatial, and predictive performance metrics, respectively.
+
+## Results
+
+### Bias and Power Prediction
+
+@fig-biaspt and @fig-biasar presents the bias estimates of regression coefficients for different modelling approaches. The numerical detail also present in @tbl-bias1 and @tbl-bias2 (see @sec-5-bias-arptdat). Under the \acr{CAR} \acr{DGP}, all three models exhibit relatively low bias, indicating that each can recover the true parameter values with reasonable accuracy. However, their uncertainty levels differ noticeably. The \acr{GWR} model shows the widest confidence intervals, reflecting its limited ability to capture the discrete, areal-type spatial dependence inherent in the \acr{CAR} process. In contrast, both \acr{GLMM} and \acr{mlvCAR} demonstrate tighter confidence bands and more stable estimates. The \acr{mlvCAR} model, in particular, aligns closely with the data-generating mechanism, as it explicitly incorporates hierarchical areal effects similar to those in the \acr{CAR} structure. This suggests that models designed to represent spatial random effects provide more efficient and reliable estimates when the underlying spatial process follows an areal random-effect pattern.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: fig-biaspt
+#| fig-cap: "Bias values by method and dataset type for point-level data"
+#| out-width: "85%"
+#| fig-align: "center"
+#| fig-pos: "H"
+
+
+biaspoint <- readRDS("data/biaspoint.rds")
+
+ggplot(biaspoint, aes(x = avg_bias, y = parameter, color = method, shape = method, group = method)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray30", linewidth = 0.5) +
+  geom_errorbarh(aes(xmin = lower, xmax = upper),
+                 height = 0.1,
+                 position = position_dodge(width = 0.5),
+                 linewidth = 0.5) +
+  geom_point(position = position_dodge(width = 0.5), size = 1.5, stroke = 1) +
+  facet_wrap(~ dataset, nrow = 1) +
+  scale_color_manual(values = c("GLMM" = "#1b9e77", "GWR" = "#d95f02", "mlvCAR" = "#7570b3")) +
+  scale_shape_manual(values = c("GLMM" = 16, "GWR" = 17, "mlvCAR" = 15)) +
+  scale_y_discrete(
+    labels = c(
+      "beta_1" = expression(beta[1]),
+      "beta_2" = expression(beta[2]),
+      "beta_3" = expression(beta[3]),
+      "beta_4" = expression(beta[4])
+    )
+  ) +
+  labs(
+    x = "Bias",
+    y = NULL,
+    color = "Method",
+    shape = "Method"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "gray95", color = "gray85"),
+    strip.text = element_text(size = 10, face = "bold"),
+    legend.position = "right",
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    axis.text.y = element_text(size = 9),
+    axis.text.x = element_text(size = 9),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+In the \acr{SAR}+\acr{CAR} \acr{DGP}, which combines spatial lag dependence and areal random effects, all models show increased variability and bias compared to the previous scenarios, reflecting the higher complexity of the underlying spatial process. The \acr{mlvCAR} model tends to produce the most stable estimates, albeit with wider uncertainty bands, indicating that while it captures areal-level correlation effectively, it does not fully represent the lag dependence component. The \acr{GWR} and \acr{GLMM} models, meanwhile, display greater bias and wider intervals, particularly for coefficients associated with building and land size, highlighting their limitations in representing the joint spatial-lag and random-effect structure. This scenario underscores the challenges of modeling hybrid spatial dependencies and the potential need for model structures that explicitly integrate both lag and conditional autoregressive components.
+
+When the data are generated under the \acr{GWR} \acr{DGP}, where spatial variation is expressed through smoothly varying local relationships, the \acr{GWR} model performs as expected—yielding the smallest bias and narrow confidence intervals across all coefficients. This demonstrates its effectiveness in capturing continuous spatial heterogeneity. The \acr{GLMM} model also produces relatively unbiased estimates but with slightly greater dispersion, as it does not explicitly account for spatial dependence. In contrast, the \acr{mlvCAR} model remains stable and unbiased, yet it shows somewhat broader uncertainty than \acr{GWR}, reflecting its attempt to approximate continuously varying effects using discrete areal random components. Despite this, \acr{mlvCAR} still performs respectably, indicating that hierarchical spatial random effects can partially capture smooth spatial trends, even when the true data-generating process follows a continuous surface.
+
+Under the area-level datasets, overall bias patterns remain relatively small across all models, indicating that each approach is able to recover the true parameter values with reasonable accuracy. However, distinct performance differences emerge depending on the underlying \acr{DGP}.
+
+When the data are generated under the \acr{CAR} \acr{DGP}, all three models—\acr{CAR}, \acr{GLM}, and \acr{SAR}—produce nearly unbiased estimates, with bias values centered around zero and narrow confidence intervals. The \acr{CAR} model performs best in this setting, as expected, due to its alignment with the true areal dependence structure. Both \acr{GLM} and \acr{SAR} also show stable estimates, though the \acr{SAR} model displays slightly higher variability, likely due to its lag-based spatial formulation, which differs from the conditional structure of the \acr{CAR} process.
+
+Under the \acr{GWR} \acr{DGP}, bias levels remain close to zero for all models, suggesting that even when the spatial process is governed by smoothly varying local relationships rather than discrete areal dependence, the area-level models still maintain reasonable robustness. However, their confidence intervals are marginally wider, particularly for \acr{SAR}, which again reflects structural mismatch between the model and the data-generating mechanism.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#| label: fig-biasar
+#| fig-cap: "Bias values by method and dataset type for area-level data"
+#| out-width: "85%"
+#| fig-align: "center"
+#| fig-pos: "H"
+
+
+biasarea <- readRDS("data/biasarea.rds")
+
+ggplot(biasarea, aes(x = avg_bias, y = parameter, color = method, shape = method, group = method)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray30", linewidth = 0.5) +
+  geom_errorbarh(aes(xmin = lower, xmax = upper),
+                 height = 0.1,
+                 position = position_dodge(width = 0.5),
+                 linewidth = 0.5) +
+  geom_point(position = position_dodge(width = 0.5), size = 1.5, stroke = 1) +
+  facet_wrap(~ dataset, nrow = 1) +
+  scale_color_manual(values = c("GLM" = "#1b9e77", "SAR" = "#d95f02", "CAR" = "#7570b3")) +
+  scale_shape_manual(values = c("GLM" = 16, "SAR" = 17, "CAR" = 15)) +
+  scale_y_discrete(
+    labels = c(
+      "beta_1" = expression(beta[1]),
+      "beta_2" = expression(beta[2]),
+      "beta_3" = expression(beta[3]),
+      "beta_4" = expression(beta[4])
+    )
+  ) +
+  labs(
+    x = "Bias",
+    y = NULL,
+    color = "Method",
+    shape = "Method"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "gray95", color = "gray85"),
+    strip.text = element_text(size = 10, face = "bold"),
+    legend.position = "right",
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    axis.text.y = element_text(size = 9),
+    axis.text.x = element_text(size = 9),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+In contrast, the \acr{SAR} + \acr{CAR} \acr{DGP} produces the largest variation among models. The \acr{SAR} model shows somewhat higher uncertainty but remains relatively unbiased, benefiting from its ability to account for spatial lag effects. The \acr{CAR} model also performs consistently, though its confidence intervals widen modestly due to the added complexity of the hybrid structure. The \acr{GLM}, lacking any explicit spatial mechanism, displays slightly higher bias and uncertainty, underscoring its limited ability to capture spatially dependent structures.
+
+Overall, the results demonstrate that the \acr{CAR} model performs most reliably when the true process exhibits discrete spatial dependence, while \acr{SAR} gains an advantage under mixed dependence structures. The \acr{GLM} provides stable but spatially naïve estimates, performing adequately only when spatial dependence is weak or absent.
+
+@tbl-rmse presents \acr{RMSE} values for all models under three different data-generating processes (\acr{CAR}, \acr{SAR}+\acr{CAR}, and \acr{GWR}), evaluated separately for area-level and point-level datasets. The values serves as a measure of predictive accuracy, where smaller values indicate better model fit.
+
+For the area-level data, the \acr{CAR} model consistently achieves the lowest \acr{RMSE} across all generating scenarios, confirming its strong performance when spatial dependence is represented through areal random effects. In the \acr{CAR} \acr{DGP}, \acr{CAR} yields an \acr{RMSE} of $1.81$, substantially outperforming \acr{GLM} ($4.09$) and \acr{SAR} ($3.85$). Even under the \acr{SAR}+\acr{CAR} \acr{DGP}, where both lag and areal components influence the outcome, \acr{CAR} still maintains competitive accuracy ($3.88$), indicating robustness to hybrid spatial structures. Under the \acr{GWR} \acr{DGP}, all three area-level models exhibit similar values around $2–2.5$, suggesting that when the spatial variation is smooth and continuous rather than discrete, the loss of predictive performance is modest.
+
+```{r, echo = FALSE, message = FALSE}
+#| label: tbl-rmse
+#| tbl-cap: "RMSE values across different datasets"
+#| eval: true
+
+# Define the data frame
+df <- data.frame(
+  Dataset = c("$CAR$", "$SAR + CAR$", "$GWR$"),
+  GLM     = c(4.09, 11.88, 2.43),
+  SAR     = c(3.85, 11.68, 2.42),
+  CAR     = c(1.81, 3.88, 2.28),
+  GLMM    = c(14.04, 47.67, 18.31),
+  GWR     = c(21.13, 48.87, 18.33),
+  mlvCAR  = c(9.94, 38.97, 14.87)
+)
+
+  # GLM     = c(27.05, 76.62, 28.84),
+  # SAR     = c(24.79, 75.72, 28.23),
+  # CAR     = c(10.49, 27.71, 27.92),
+
+# Render the table with math symbols in headers and custom header groups
+kbl(
+  df,
+  col.names = c("Dataset", "$GLM$", "$SAR$", "$CAR$", "$GLMM$", "$GWR$", "$mlvCAR$"),
+  escape = FALSE, # Needed to correctly render LaTeX math symbols
+  booktabs = TRUE,
+  longtable = TRUE
+) %>%
+  add_header_above(c(" " = 1, "Area-level data" = 3, "Point-level data" = 3)) %>% # Add grouped headers
+  kable_styling(latex_options = c("repeat_header"), font_size = 9) # Repeat headers on new pages if longtable
+
+```
+
+For the point-level data, the \acr{mlvCAR} model demonstrates the best overall performance, producing the lowest \acr{RMSE} across all data-generating scenarios. In the \acr{CAR} \acr{DGP}, \acr{mlvCAR} achieves an \acr{RMSE} of 9.94, considerably smaller than \acr{GLMM} ($14.04$) and \acr{GWR} ($21.13$). The superiority of \acr{mlvCAR} becomes more evident under the \acr{SAR}+\acr{CAR} \acr{DGP}, where it retains the lowest \acr{RMSE} ($38.97$) despite the increased complexity of spatial dependence. Under the \acr{GWR} \acr{DGP}, all models show higher \acr{RMSE}s than in the \acr{CAR} case, but \acr{mlvCAR} remains the most stable, reflecting its adaptability to varying spatial structures.
+
+Overall, these findings indicate that:
+
+-   \acr{CAR}-based models (\acr{CAR} and \acr{mlvCAR}) are the most effective when spatial dependence arises from areal or hierarchical structures.
+
+-   The \acr{SAR} model performs moderately well but does not surpass \acr{CAR} in any scenario.
+
+-   \acr{GWR} and \acr{GLMM}, while useful for modeling local and individual-level variability, show diminished predictive accuracy in the presence of discrete or mixed spatial dependencies.
+
+-   Hence, both \acr{CAR} (for area-level data) and \acr{mlvCAR} (for point-level data) emerge as the most reliable models in capturing spatially dependent variations across different data structures.
+
+### Insights from $\rho$ values in each data scenario experiments
+
+@fig-rho illustrates the distribution of the estimated spatial autocorrelation parameter ($\rho$) across three data-generating scenarios: \acr{CAR}, \acr{SAR}+\acr{CAR}, and \acr{GWR} under different model frameworks. Each boxplot summarizes the $\rho$ values obtained from 1000 simulation replications. Note that only three out of the six fitted models include the spatial dependence parameter $\rho$, which is why $\rho$ values can only be reported for these three models: \acr{CAR}, \acr{mlvCAR}, and \acr{SAR}.
+
+The estimated $\rho$ values across the three models reveal important differences in how spatial dependence is captured under various data-generating scenarios. For the \acr{CAR} model, the estimated $\rho$ values are consistently high across all data types, with median values around $0.6$–$0.7$, particularly when fitted to data generated under the \acr{CAR} framework. This indicates that the \acr{CAR} model effectively captures areal-level spatial dependence when such discrete neighborhood structures govern the data.
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE}
+#| label: fig-rho
+#| fig-cap: "Boxplot of Rho Values from CAR Model Across Different Experiments"
+#| out-width: "100%"
+#| fig-align: "center"
+#| fig-pos: "H"
+
+rho_a <- readRDS("data/CARdata/PARAM_SP/paramsp_car_a.rds") %>% 
+  mutate(scenario = "CAR data")
+rho_b <- readRDS("data/SARCARdata/PARAM_SP/paramsp_sarcar_a.rds") %>% 
+  mutate(scenario = "SARCAR data")
+rho_c <- readRDS("data/GWRdata/PARAM_SP/paramsp_gwr_a.rds") %>% 
+  mutate(scenario = "GWR data")
+rho_d <- readRDS("data/CARdata/PARAM_SP/paramsp_car_mlvcar.rds") %>% 
+  mutate(scenario = "CAR data")
+rho_e <- readRDS("data/SARCARdata/PARAM_SP/paramsp_sarcar_mlvcar.rds") %>% 
+  mutate(scenario = "SARCAR data")
+rho_f <- readRDS("data/GWRdata/PARAM_SP/paramsp_gwr_mlvcar.rds") %>% 
+  mutate(scenario = "GWR data")
+
+rho <- bind_rows(
+  rho_a, rho_b, rho_c,
+  rho_d, rho_e, rho_f
+) %>% filter(parameter == "rho")
+
+# Reorder facet levels
+rho$method <- factor(rho$method, levels = c("SAR", "CAR", "mlvCAR"))
+
+# Plot
+ggplot(rho, aes(x = mean, y = scenario, color = method, fill = method)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", linewidth = 0.4) +
+  geom_boxplot(
+    outlier.shape = TRUE, width = 0.5, alpha = 0.4,
+    position = position_dodge(width = 0.7)
+  ) +
+  facet_wrap(~ method, nrow = 1, strip.position = "top", scales = "free_x") +
+  scale_color_viridis_d(option = "D", end = 0.8) +
+  scale_fill_viridis_d(option = "D", end = 0.8) +
+  labs(
+    x = expression(rho),
+    y = NULL,
+    color = "Model",
+    fill = "Model"
+  ) +
+  theme_bw(base_size = 9) +
+  theme(
+    strip.text = element_text(size = 9, face = "bold"),
+    legend.position = "right",
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 8, face = "bold"),
+    axis.text.y = element_text(size = 8),
+    axis.text.x = element_text(size = 8),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_line(color = "gray90")
+  )
+
+```
+
+The \acr{mlvCAR} model exhibits a similar pattern, although with a slightly wider spread of $\rho$ values. This broader distribution reflects the model’s hierarchical nature, which accommodates both between-area and within-area dependencies, thereby introducing greater flexibility in representing complex spatial processes. Despite being designed for point-level data, \acr{mlvCAR} retains the ability to capture areal correlation, demonstrating its robustness in cross-scale contexts.
+
+In contrast, the \acr{SAR} model produces substantially lower $\rho$ estimates, indicating that spatial lag dependence is less effective for areal-level data, where correlation arises from shared boundaries rather than lagged outcomes. Notably, even when fitted to data generated under the \acr{GWR} framework, both \acr{CAR} and \acr{mlvCAR} models still identify meaningful spatial dependence, suggesting that adjacency-based models can partially detect smooth spatial variation. This highlights the adaptability of \acr{CAR}-type structures in recognising spatial correlation that extends beyond their native areal domain, albeit in a more aggregated form compared to \acr{GWR}’s localised approach.

@@ -1,0 +1,324 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+/* Background */
+.reveal {
+  background-color: #fff;
+  background-size: cover;
+}
+
+.reveal .slides section.title-slide {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.reveal a {
+  line-height: 1.5em;
+  font-size: 100%;
+}
+
+.reveal p {
+  font-weight: 300;
+  line-height: 1.45;
+}
+
+/* Headings */
+.reveal h1 {
+  text-align: left;
+  display: block;
+  margin-top: 0.5em;
+  margin-left: 0.2em;
+  width: 82%;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 100%;
+  font-weight: 300;
+  color: #1e2f47;
+  line-height: 1;
+}
+
+.reveal section,
+.reveal p,
+.reveal li {
+  font-weight: 300;
+}
+
+.reveal h2 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 50px;
+  color: #1e2f47;
+  margin-left: 0.2em;
+}
+
+.reveal h3 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 42px;
+  color: #0a4c86;
+}
+
+#title-slide {
+  text-align: left;
+  display: block;
+  margin-top: 0.8em;
+  
+
+  .title {
+    font-size: 2em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    width: 85%;
+  }
+
+  .subtitle {
+    color: $ubdblue;
+    font-size: 1.3em;
+    color: #325494;
+    font-style: italic;
+    margin-top: 0.35em;
+    margin-bottom: 0.6em;
+    margin-left: 0.35em;
+  }
+
+  /* Author name */
+  .quarto-title-author-name {
+    font-size: 1.0em;
+    font-weight: 500;
+    margin-top: 0.35em;
+    margin-bottom: 0.1em;
+    margin-left: 0.01;
+  }
+
+  /* Email */
+  .quarto-title-author-email {
+    font-size: 0.7em;
+    margin: 0.05em 0;
+    color: #325494;
+  }
+
+  /* Affiliation */
+  .quarto-title-affiliation {
+    font-size: 0.75em;
+    margin: 0.05em 0;
+  }
+
+  /* Date */
+  .date {
+    font-size: 0.7em;
+    margin-top: 0.25em;
+    color: #999;
+  }
+
+  /* Reduce spacing added by Quarto metadata wrapper */
+  .quarto-title-meta p {
+    margin-top: 0.05em;
+    margin-bottom: 0.05em;
+    margin-left: 0.05em;
+  }
+}
+
+/* Body */
+.reveal section {
+  font-family: 'Lato', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  color: #1e2f47;
+}
+
+/* Highlight Box */
+.highlight-box {
+  display: inline-block;
+  padding: 20px 40px;
+  background-color: #1e2f47;
+  color: white;
+  font-size: 60px;
+  font-weight: 600;
+  margin: 30px 0;
+}
+
+/* Columns spacing */
+.columns {
+  margin-top: 40px;
+}
+
+/* Subtle divider */
+.reveal hr {
+  border: none;
+  height: 1px;
+  background: #2e4a6b;
+  margin: 30px 0;
+}
+
+
+/* ===== Title Slide Layout ===== */
+
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.title-left {
+  width: 65%;
+}
+
+.title-left h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  color: #1e2f47;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.subtitle {
+  font-size: 26px;
+  margin-top: 20px;
+  color: #2e4a6b;
+}
+
+.author {
+  text-align: left;
+  margin-top: 40px;
+  font-size: 22px;
+  color: #444;
+}
+
+.author-grid {
+  display: flex;
+  gap: 60px;
+  margin-top: 35px;
+  font-size: 22px;
+  color: #444;
+}
+
+.institution {
+  text-align: left;
+  margin-top: 30px;
+  font-size: 20px;
+  color: #666;
+}
+
+.title-logo img {
+  width: 130px;
+  height: auto;
+}
+
+/* Remove default center alignment */
+.reveal .slides section {
+  text-align: left;
+}
+
+.reveal .slides section ul li::marker {
+  color: #8fa8c7;
+}
+
+/* ===== Dual Logo Title Layout ===== */
+
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.title-left {
+  width: 65%;
+}
+
+.title-logos {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.title-logos img {
+  width: 110px;
+  height: auto;
+}
+
+.flow-diagram {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.flow-box {
+  display: inline-block;
+  padding: 20px 40px;
+  border: 1.5px solid #1e2f47;
+  margin: 10px 0;
+  font-size: 24px;
+  color: #1e2f47;
+  background: white;
+}
+
+.flow-arrow {
+  font-size: 28px;
+  color: #1e2f47;
+}
+
+.solution {
+  background: #1e2f47;
+  color: white;
+  font-weight: 600;
+}
+
+.centered {
+  text-align: center;
+}
+
+.big-number {
+  font-size: 130px;
+  font-weight: 800;
+  color: #1e2f47;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.big-caption {
+  font-size: 28px;
+  color: #1e2f47;
+  text-align: center;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.caption {
+  font-size: 18px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.problem-box {
+  margin-top: 25px;
+  padding: 15px 20px;
+  border-left: 4px solid #1e2f47;
+  background-color: #f4f4f4;
+  font-style: italic;
+  font-size: 20px;
+  color: #333;
+}
+
+.reveal .columns {
+  margin-top: 50px;
+}
+
+
+/* Custom Callout - Academic Tone */
+.callout-note {
+  background-color: rgba(30, 47, 71, 0.08);   /* versi transparan dari warna utama */
+  border-left: 4px solid #1e2f47;
+  border-radius: 8px;
+}
+
+.callout-note .callout-title {
+  color: #1e2f47;
+  font-weight: 600;
+}
+
+.callout-note .callout-body {
+  color: #1e2f47;
+}

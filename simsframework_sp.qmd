@@ -1,0 +1,49 @@
+---
+title: "A Simulation Framework for Evaluating Spatial Regression Models for Hierarchical Areal Data"
+author:
+  - name: Indira Puteri Kinasih
+    email: indiraputeri@uinmataram.ac.id
+    affiliation: Universitas Islam Negeri Mataram
+format:
+  pdf:
+    documentclass: article
+    papersize: A4
+    fontsize: 11pt
+    geometry: margin=1in
+execute:
+  echo: false
+---
+
+## Abstract
+
+Simulation studies play an important role in understanding the behaviour of spatial statistical models under controlled conditions. This study proposes a simulation framework for evaluating spatial regression models for hierarchical areal data, where multiple observations are nested within geographic areas and precise coordinate information is unavailable. Such data structures are common in applied studies where observations are recorded at the unit level but spatial dependence is defined at the area level. Synthetic datasets are generated under different spatial dependence structures, including Conditional Autoregressive (CAR) and Simultaneous Autoregressive (SAR) processes, as well as spatially varying coefficient mechanisms. Covariates are incorporated at the observation level while spatial dependence is introduced through area-level structures. Several spatial and non-spatial regression models are then fitted to the simulated datasets, including Generalized Linear Models (GLM), Geographically Weighted Regression (GWR), and hierarchical spatial models. Model performance is evaluated using bias, root mean square error, and predictive accuracy. The results illustrate how different modelling assumptions influence estimation quality when spatial information is available only at the area level. The proposed simulation framework provides a useful tool for examining the suitability of spatial regression models for hierarchical areal data and offers practical insights for applied researchers working with spatially grouped observations.
+
+\textbf{Keywords:} spatial regression, hierarchical data, areal data, simulation study, spatial dependence
+
+## Introduction
+
+Spatial regression models are widely used to analyze geographically structured data in fields such as economics, epidemiology, and environmental studies. These models are designed to capture spatial dependence among observations and to improve estimation and prediction when spatial autocorrelation is present.
+
+Many spatial modelling approaches assume that observations are associated with precise geographic coordinates. Under this assumption, spatial dependence can be represented through distance-based relationships between locations. Methods such as local regression and spatial kernel weighting rely heavily on the availability of accurate spatial coordinates.
+
+In practice, however, many datasets do not contain precise location information for individual observations. Instead, observations are often recorded within administrative units such as districts, municipalities, or census tracts. In these cases, multiple observations may exist within the same geographic area, while spatial relationships are defined only between the areas themselves. Such datasets form hierarchical areal structures, where observations are nested within spatial units.
+
+This structure creates methodological challenges for spatial modelling. Some spatial models operate at the point level, while others are designed for area-level spatial processes. Applying inappropriate models may lead to biased estimates or reduced predictive performance.
+
+This study proposes a simulation framework for evaluating spatial regression models under hierarchical areal data structures. Synthetic datasets are generated under controlled spatial dependence processes, and several spatial and non-spatial regression models are compared in terms of estimation accuracy and predictive performance. The framework provides insights into the suitability of different modelling approaches when spatial information is available only at the area level.
+
+## Hierarchical Areal Data Structure
+
+In many empirical datasets, observations are organized within spatial administrative units such as districts, municipalities, or census tracts. In this structure, multiple observations may belong to the same spatial area while spatial relationships are defined only between the areas themselves.
+
+Let $j = 1, \dots, J$ denote spatial areas. Within each area $j$, there are $n_j$ observations indexed by $i = 1, \dots, n_j$.
+
+Each observation is associated with a response variable $y_{ij}$ and a set of covariates $x_{ij}$, where $i$ indicates the observation within area $j$. The total number of observations in the dataset is therefore
+
+$$
+N = \sum_{j=1}^{J} n_j .
+$$
+
+This structure represents a hierarchical arrangement in which individual observations are nested within spatial areas. While observations vary within each area, spatial relationships are defined at the area level through an adjacency or neighborhood structure among the areas.
+
+Such datasets are common in applications where precise geographic coordinates for individual observations are unavailable, but spatial relationships between administrative units can still be defined.
