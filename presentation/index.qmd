@@ -56,14 +56,45 @@ include-after: |
 
 ## Background
 
-:::{.incremental}
+::: {.incremental}
 
+- Spatial data violate independence assumptions
+- Hierarchical structure is common in practice
+- Ignoring these leads to bias and inefficiency
+- Multiple spatial models exist
+- **However: no clear guidance on which model to use**
 
-- Spatial + hierarchical nature of data
-- Why independence assumption fails
 :::
 
-## Problems
+## Example
+
+![](whyhousepricesspatial.png){fig-align="center"}
+
+::: footer
+@trojanek2018spatial; @helbich2017spatial; @heyman2019house; @brunauer2013modelling; @jamil2025spatio
+:::
+
+## Just a bit contextual...
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center;"}
+![Spatial distribution of housing data](housinglop.png)
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center;"}
+![neighbourhood structure of Lombok’s sub-districts](lok_nbmap.png)
+:::
+:::
+:::
+
+::: footer
+Credit: OpenStreetMap contributors
+:::
+
+## The Models
 
 
 -   **Standard regression models** $\sum_{k=1}^p \beta_k x_{ik}$ ignore spatial dependence in housing prices;
@@ -74,6 +105,11 @@ include-after: |
 
 -   **Conditionally autoregressive models (CAR)** remain underused in the study areas that require a spatial regression model
 
+::: footer
+**Notes: the equations are not complete. This is aimed to show the core component of each model**
+
+@yu2011gtwr; @yan2019evaluating;@helbich2013spatiotemporal; @wall2004close; @trojanek2018spatial
+:::
 
 
 ## Conditional Autoregressive (CAR) Model
@@ -250,7 +286,23 @@ More details $\rightarrow$ [Simulation 1 Diagram](#sims1)
 
 ## Prediction Accuracy Follows Model–Data Alignment
 
-![](rmseplot.png)
+![](rmseplot.png){fig-align="center" width="60%"}
+
+
+## Key Takeaway
+
+Beyond standard simulation studies, this work introduces:
+
+- Multiple spatial data-generating mechanisms
+- Simultaneous evaluation under CAR, GWR, and hybrid SAR+CAR processes
+- Systematic misspecification analysis
+- Integration of hierarchical spatial modelling
+
+**Code & Reproducibility**
+
+https://github.com/indiraputeri-phd/CAR_simcomp
+
+# Thank you :)
 
 # Appendix
 
@@ -262,3 +314,4 @@ More details $\rightarrow$ [Simulation 1 Diagram](#sims1)
 
 [← Back](#sims1_main)
 
+## References
