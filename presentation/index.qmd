@@ -15,7 +15,7 @@ author:
     affiliations: Universiti Brunei Darussalam
 
 date: April 9, 2026
-bibliography: ../refs.bib
+bibliography: refs.bib
 
 format:
   revealjs:
